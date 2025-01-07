@@ -14,10 +14,46 @@
     <section id="categories">
       <h2>Categorías</h2>
       <ul id="category-list">
-        <!-- Las categorías se cargarán dinámicamente -->
+        <!-- Aqui se cargan las categorias -->
       </ul>
     </section>
+   
+    <div>
+      <input id=add-category type="submit" value="Add categorie">
+      <input id="add-site" type="submit" value="Add site">
+    </div>
+
+     
+    <div id="category-window" class="hide-category-window">
+      <h3>Add new category</h3>
+      <form id="window-form">
+        <input type="text" id="name-new-category" placeholder="Category name">
+        <button type="submit">Save</button>
+        <button type="button" id="close-category-window">Cancel</button>
+      </form>
+    </div>
+
+    <table border="1">
+      <thead>
+        <tr>
+        <th>Sitio</th>
+        <th>User</th>
+        <th>Created at</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+    </tbody>
+    </table>
+    
+
   </main>
   <script src="scripts/categories.js"></script>
 </body>
+
+<style>
+      .hide-category-window{
+      display:none;
+    }
+</style>
 </html>

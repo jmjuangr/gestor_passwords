@@ -15,5 +15,29 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((data) => drawData(data))
       .catch((error) => console.error("Error al cargar categorías:", error));
-  });
+
+
+    });
+
+    
+    const addNewCategoryBtn = document.getElementById ("add-category");
+    const categoryWindow= document.getElementById ("category-window");
+    const closeCategoryWindow = document.getElementById ("close-category-window")
+    
+    
+    addNewCategoryBtn.addEventListener("click",(e) =>{
+      e.preventDefault();
+      categoryWindow.classList.remove("hide-category-window")
+
+    }
+  );
+
+  closeCategoryWindow.addEventListener("click",(e)=> {
+    e.preventDefault();
+    categoryWindow.classList.add("hide-category-window")
+  }
+
+)
+
+
   
