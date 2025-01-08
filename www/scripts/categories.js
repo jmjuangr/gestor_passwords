@@ -26,9 +26,43 @@ document.addEventListener("DOMContentLoaded", () => {
           .catch((error) => console.error("Error deleting category:", error));
       });
 
+      //Añado botón para seleccionar categoría
       const selectButton = document.createElement("button");
       selectButton.textContent = "Select";
       selectButton.id = `select-button-${category.name}`;
+
+      //Muestro la tabla sites cuando pulsamos botón select
+      const sitesTable= document.querySelector("#sites-table")
+      const sitesTableBody = sitesTable.querySelector("tbody");
+
+      //Lógica para mostrar sites al pulsar botón select
+      selectButton.addEventListener ("click",()=>{
+
+        
+   
+        fetch(`http://localhost:3000/categories/${category.id}`)
+        .then((res) => res.json())
+        .then((category) => {
+          const sites = category.sites;
+          sitesTableBody.innerHTML = ""; // Limpiar la tabla
+          sites.forEach((site) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${site.name}</td>
+              <td>${site.user}</td>
+              <td>${site.createdAt}</td>
+              <td>
+                <button class="delete-site" data-site-id="${site.id}">Delete</button>
+              </td>
+            `;
+            sitesTableBody.appendChild(row);
+          });
+
+          sitesTable.classList.remove("hide-sites-table"); // Mostrar la tabla
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+      
 
       li.appendChild(deleteButton);
       li.appendChild(selectButton);
@@ -85,5 +119,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       alert("Please type a valid name");
     }
+
   });
+
+
 });
+

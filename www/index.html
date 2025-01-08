@@ -14,7 +14,7 @@
 
     <div>
       <input id=add-category type="submit" value="Add category">
-      <input id="add-site" type="submit" value="Add site">
+     <a href="sites.html">Add site</a>
     </div>
     
     <section id="categories">
@@ -36,7 +36,7 @@
       </form>
     </div>
 
-    <table border="1">
+    <table border="1" id="sites-table" class="hide-sites-table">
       <thead>
         <tr>
         <th>Sitio</th>
@@ -46,7 +46,8 @@
       </tr>
       </thead>
       <tbody>
-    </tbody>
+         <!-- Aqui se cargan los sites -->
+      </tbody>
     </table>
     
 
@@ -55,8 +56,13 @@
 </body>
 
 <style>
-      .hide-category-window{
+    .hide-category-window {
       display:none;
     }
+
+    .hide-sites-table{
+      display:none;
+    }
+
 </style>
 </html>
