@@ -4,21 +4,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Pass saver</title>
 </head>
 <body>
   <header>
-    <h1>Gestor de contraseñas</h1>
+    <h1>Pass saver</h1>
   </header>
   <main>
 
     <div>
       <input id=add-category type="submit" value="Add category">
-     <a href="sites.html">Add site</a>
+    </div>
+
+    <div>
+      <a href="sites.html">
+        <button>Add site</button>
+      </a>
     </div>
     
     <section id="categories">
-      <h2>Categorías</h2>
+      <h2>Categories</h2>
       <ul id="category-list">
         <!-- Aqui se cargan las categorias -->
       </ul>
@@ -39,8 +44,10 @@
     <table border="1" id="sites-table" class="hide-sites-table">
       <thead>
         <tr>
-        <th>Sitio</th>
+        <th>Site</th>
+        <th>URL</th>
         <th>User</th>
+        <th>Password</th>
         <th>Created at</th>
         <th>Actions</th>
       </tr>

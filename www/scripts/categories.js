@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       selectButton.textContent = "Select";
       selectButton.id = `select-button-${category.name}`;
 
-      //Muestro la tabla sites cuando pulsamos botón select
+      
       const sitesTable= document.querySelector("#sites-table")
       const sitesTableBody = sitesTable.querySelector("tbody");
 
@@ -49,26 +49,52 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = document.createElement("tr");
             row.innerHTML = `
               <td>${site.name}</td>
+              <td>${site.url}</td>
               <td>${site.user}</td>
+              <td>${site.password}</td>
               <td>${site.createdAt}</td>
               <td>
-                <button class="delete-site" data-site-id="${site.id}">Delete</button>
+                <button class="delete-site" id="data-site-id-${site.id}">Delete</button>
               </td>
             `;
+
+            //Botón de eliminar sitio
+            const deleteSiteButton = row.querySelector(".delete-site");
+            deleteSiteButton.addEventListener("click", () => {
+              fetch(`http://localhost:3000/sites/${site.id}`, {
+                method: "DELETE",
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Error deleting site");
+                  }
+                  return fetch(`http://localhost:3000/categories/${category.id}`);
+                })
+                .then((res) => res.json())
+                .then((data) => drawData(data))
+                .catch((error) => console.error("Error deleting site:", error));
+
+                });
+                
+            });
+
             sitesTableBody.appendChild(row);
           });
 
           sitesTable.classList.remove("hide-sites-table"); // Mostrar la tabla
         })
         .catch((error) => console.error("Error:", error));
+
+       
     });
+
       
 
       li.appendChild(deleteButton);
       li.appendChild(selectButton);
       categoryList.appendChild(li);
-    });
-  };
+    }
+  
 
   fetch("http://localhost:3000/categories")
     .then((res) => res.json())
