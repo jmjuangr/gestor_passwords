@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveSiteButton = document.querySelector("#save-site");
     const cancelSiteButton = document.querySelector("#cancel-site");
   
-    let selectedCategoryId = null; // Para guardar el ID de la categoría seleccionada
+    let selectedCategoryId = null; //Gaurda ID de la categoría seleccionada
   
-    // Función para renderizar categorías
+    // Muestra categorías
     const drawData = (data) => {
       categoryList.innerHTML = "";
       data.forEach((category) => {
@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Obtener los datos del formulario
       const siteData = {
+        name: document.querySelector("#site-name").value,
         url: document.querySelector("#site-url").value,
         user: document.querySelector("#site-user").value,
         password: document.querySelector("#site-password").value,
@@ -41,12 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
       };
   
       // Validar que los campos no estén vacíos
-      if (!siteData.url || !siteData.user || !siteData.password) {
+      if (!siteData.name ||!siteData.url || !siteData.user || !siteData.password) {
         alert("Todos los campos obligatorios deben completarse.");
         return;
       }
   
-      // Realizar la petición POST para guardar el sitio
+      // Hace POST para guardar el sitio
       fetch(`http://localhost:3000/categories/${selectedCategoryId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Error al guardar el sitio.");
+            throw new Error("Error saving site.");
           }
           return fetch("http://localhost:3000/categories"); // Actualizar la lista de categorías
         })
@@ -64,20 +65,21 @@ document.addEventListener("DOMContentLoaded", () => {
           sitesForm.classList.add("hide-form"); // Ocultar el formulario
           alert("Sitio guardado con éxito.");
           // Limpiar los campos del formulario
+          document.querySelector("#site-name").value="";
           document.querySelector("#site-url").value = "";
           document.querySelector("#site-user").value = "";
           document.querySelector("#site-password").value = "";
           document.querySelector("#site-description").value = "";
         })
-        .catch((error) => console.error("Error al guardar el sitio:", error));
+        .catch((error) => console.error("Error saving site", error));
     });
   
-    // Evento para cancelar el formulario
+    // Boton cancel
     cancelSiteButton.addEventListener("click", () => {
       sitesForm.classList.add("hide-form"); // Ocultar el formulario
     });
   
-    // Petición inicial para obtener categorías
+    // Mostrar categories
     fetch("http://localhost:3000/categories")
       .then((res) => res.json())
       .then((data) => drawData(data))

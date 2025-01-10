@@ -1,16 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   const categoryList = document.querySelector("#category-list");
+  const sitesTable = document.querySelector("#sites-table");
+  const sitesTableBody = sitesTable.querySelector("tbody");
 
+  // Mostrar categories
   const drawData = (data) => {
     categoryList.innerHTML = "";
     data.forEach((category) => {
       const li = document.createElement("li");
       li.textContent = category.name;
-      //Lógica añadir botón de eliminar y eliminar categoría
+
+      // Botón para eliminar categoría
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.id = `delete-button-${category.name}`;
-
       deleteButton.addEventListener("click", () => {
         fetch(`http://localhost:3000/categories/${category.id}`, {
           method: "DELETE",
@@ -22,84 +25,71 @@ document.addEventListener("DOMContentLoaded", () => {
             return fetch("http://localhost:3000/categories");
           })
           .then((res) => res.json())
-          .then((data) => drawData(data))
+          .then((data) => drawData(data)) 
           .catch((error) => console.error("Error deleting category:", error));
       });
 
-      //Añado botón para seleccionar categoría
+      // Botón para seleccionar categoría
       const selectButton = document.createElement("button");
       selectButton.textContent = "Select";
       selectButton.id = `select-button-${category.name}`;
-
-      
-      const sitesTable= document.querySelector("#sites-table")
-      const sitesTableBody = sitesTable.querySelector("tbody");
-
-      //Lógica para mostrar sites al pulsar botón select
-      selectButton.addEventListener ("click",()=>{
-
-        
-   
+      selectButton.addEventListener("click", () => {
         fetch(`http://localhost:3000/categories/${category.id}`)
-        .then((res) => res.json())
-        .then((category) => {
-          const sites = category.sites;
-          sitesTableBody.innerHTML = ""; // Limpiar la tabla
-          sites.forEach((site) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${site.name}</td>
-              <td>${site.url}</td>
-              <td>${site.user}</td>
-              <td>${site.password}</td>
-              <td>${site.createdAt}</td>
-              <td>
-                <button class="delete-site" id="data-site-id-${site.id}">Delete</button>
-              </td>
-            `;
-
-            //Botón de eliminar sitio
-            const deleteSiteButton = row.querySelector(".delete-site");
-            deleteSiteButton.addEventListener("click", () => {
-              fetch(`http://localhost:3000/sites/${site.id}`, {
-                method: "DELETE",
-              })
-                .then((response) => {
-                  if (!response.ok) {
-                    throw new Error("Error deleting site");
-                  }
-                  return fetch(`http://localhost:3000/categories/${category.id}`);
-                })
-                .then((res) => res.json())
-                .then((data) => drawData(data))
-                .catch((error) => console.error("Error deleting site:", error));
-
-                });
-                
-            });
-
-            sitesTableBody.appendChild(row);
-          });
-
-          sitesTable.classList.remove("hide-sites-table"); // Mostrar la tabla
-        })
-        .catch((error) => console.error("Error:", error));
-
-       
-    });
-
-      
+          .then((res) => res.json())
+          .then((data) => drawSites(data.sites)) 
+          .catch((error) => console.error("Error loading category:", error));
+      });
 
       li.appendChild(deleteButton);
       li.appendChild(selectButton);
       categoryList.appendChild(li);
-    }
-  
+    });
+  };
 
+  // Mostrar sitios de una categoría
+  const drawSites = (sites) => {
+    sitesTableBody.innerHTML = ""; 
+    sites.forEach((site) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${site.name}</td>
+        <td>${site.url}</td>
+        <td>${site.user}</td>
+        <td>${site.password}</td>
+        <td>${site.createdAt}</td>
+        <td>
+          <button class="delete-site" data-site-id="${site.id}">Delete</button>
+        </td>
+      `;
+
+      // Botón de eliminar sitio
+      const deleteSiteButton = row.querySelector(".delete-site");
+      deleteSiteButton.addEventListener("click", () => {
+        fetch(`http://localhost:3000/sites/${site.id}`, { method: "DELETE" })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error deleting site");
+            }
+            return fetch(`http://localhost:3000/categories/${site.categoryId}`);
+          })
+          .then((res) => res.json())
+          .then((data) => drawSites(data.sites)) 
+          .catch((error) => console.error("Error deleting site:", error));
+      });
+
+      sitesTableBody.appendChild(row);
+    });
+
+    sitesTable.classList.remove("hide-sites-table"); 
+  };
+
+  // Cargar categorías al iniciar
   fetch("http://localhost:3000/categories")
     .then((res) => res.json())
-    .then((data) => drawData(data))
-    .catch((error) => console.error(error));
+    .then((data) => drawData(data)) 
+    .catch((error) => console.error("Error loading categories:", error));
+});
+
 
   // Lógica añadir categoría
   const addNewCategoryBtn = document.querySelector("#add-category");
@@ -149,5 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-});
+
 
