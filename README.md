@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-# AA 1EV DWEC SV ONLINE
+
+# AA1
 
 📖 Para el desarrollo de la primera actividad de aprendizaje, es recomendable utilizar este esqueleto como base del proyecto.
 
@@ -87,4 +87,3 @@ El body tendrá la siguiente estructura:
 ⚠️  Al enviar datos, es necesario indicar la cabecera `Content-type:application/json`
 =======
 # gestor_contrase-as
->>>>>>> ebbe3ce203be805e311fc3ae6373541e43c308ac
