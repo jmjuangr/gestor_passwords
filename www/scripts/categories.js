@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const li = document.createElement("li");
       li.textContent = category.name;
 
+      const buttonDiv = document.createElement("div");
+      buttonDiv.classList.add("button-div");
+
       // Botón para eliminar categoría
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
@@ -40,8 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
           .catch((error) => console.error("Error loading category:", error));
       });
 
-      li.appendChild(deleteButton);
-      li.appendChild(selectButton);
+      buttonDiv.appendChild(deleteButton);
+      buttonDiv.appendChild(selectButton);
+
+      li.appendChild(buttonDiv);
       categoryList.appendChild(li);
     });
   };
@@ -92,51 +97,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // Lógica añadir categoría
-  const addNewCategoryBtn = document.querySelector("#add-category");
-  const categoryWindow = document.querySelector("#category-window");
-  const closeCategoryWindow = document.querySelector("#close-category-window");
-  const categoryForm = document.querySelector("#category-window-form");
-
-  addNewCategoryBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    categoryWindow.classList.remove("hide-category-window");
-  });
-
-  closeCategoryWindow.addEventListener("click", (e) => {
-    e.preventDefault();
-    categoryWindow.classList.add("hide-category-window");
-  });
-
-  categoryForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const newCategoryName = document.querySelector("#name-new-category").value;
-
-    if (newCategoryName) {
-      fetch("http://localhost:3000/categories", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newCategoryName }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Error creating category");
-          }
-          alert(`Category added: ${newCategoryName}`);
-          categoryWindow.classList.add("hide-category-window");
-          document.querySelector("#name-new-category").value = "";
-          return fetch("http://localhost:3000/categories");
+  document.addEventListener("DOMContentLoaded", () => {
+    const addNewCategoryBtn = document.querySelector("#add-category");
+    const modalBackground = document.querySelector("#modal-background");
+    const closeCategoryWindow = document.querySelector("#close-category-window");
+    const categoryForm = document.querySelector("#category-window-form");
+  
+    
+    addNewCategoryBtn.addEventListener("click", () => {
+      modalBackground.classList.remove("hide-modal");
+    });
+  
+    
+    closeCategoryWindow.addEventListener("click", () => {
+      modalBackground.classList.add("hide-modal");
+    });
+  
+   
+    categoryForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newCategoryName = document.querySelector("#name-new-category").value;
+  
+      if (newCategoryName) {
+        fetch("http://localhost:3000/categories", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newCategoryName }),
         })
-        .then((res) => res.json())
-        .then((data) => drawData(data))
-        .catch((error) => console.error("Error trying to add category:", error));
-    } else {
-      alert("Please type a valid name");
-    }
-
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error creating category");
+            }
+            alert(`Category added: ${newCategoryName}`);
+            modalBackground.classList.add("hide-modal"); 
+            document.querySelector("#name-new-category").value = ""; 
+            return fetch("http://localhost:3000/categories");
+          })
+          .then((res) => res.json())
+          .then((data) => drawData(data)) 
+          .catch((error) => console.error("Error trying to add category:", error));
+      } else {
+        alert("Please type a valid name");
+      }
+    });
   });
+  
 
 
 

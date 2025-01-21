@@ -5,6 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pass saver</title>
+  <link rel="stylesheet" href="css/styles.css">
+
 </head>
 <body>
   <header>
@@ -32,14 +34,19 @@
    
 
      
-    <div id="category-window" class="hide-category-window">
-      <h3>Add new category</h3>
-      <form id="category-window-form">
-        <input type="text" id="name-new-category" placeholder="Category name">
-        <button type="submit">Save</button>
-        <button type="button" id="close-category-window">Cancel</button>
-      </form>
+    <div id="modal-background" class="modal-background hide-modal">
+      <div class="modal-content">
+        <h3>Add new category</h3>
+        <form id="category-window-form">
+          <input type="text" id="name-new-category" placeholder="Category name">
+          <div class="modal-actions">
+            <button type="submit">Save</button>
+            <button type="button" id="close-category-window">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
+    
 
     <table border="1" id="sites-table" class="hide-sites-table">
       <thead>
@@ -62,14 +69,6 @@
   <script src="scripts/categories.js"></script>
 </body>
 
-<style>
-    .hide-category-window {
-      display:none;
-    }
-
-    .hide-sites-table{
-      display:none;
-    }
 
 </style>
 </html>
